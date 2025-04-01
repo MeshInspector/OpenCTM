@@ -140,15 +140,7 @@ extern "C" {
   #endif
 #else
   // Unix
-  #if !defined(OPENCTM_STATIC) && !defined(OPENCTM_BUILD)
-    #define CTMEXPORT extern
-  #else
-    #if defined(OPENCTM_BUILD) && defined(__GNUC__) && (__GNUC__ >= 4)
-      #define CTMEXPORT __attribute__ ((visibility("default")))
-    #else
-      #define CTMEXPORT
-    #endif
-  #endif
+  #define CTMEXPORT __attribute__ ((visibility("default")))
   #define CTMCALL
 #endif
 
