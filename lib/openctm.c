@@ -356,7 +356,7 @@ CTMEXPORT const CTMfloat * CTMCALL ctmGetFloatArray(CTMcontext aContext,
 {
   _CTMcontext * self = (_CTMcontext *) aContext;
   _CTMfloatmap * map;
-  CTMuint i;
+  CTMenum i;
   if(!self) return (CTMfloat *) 0;
 
   // Did the user request a UV map?
@@ -445,7 +445,7 @@ CTMEXPORT const char * CTMCALL ctmGetUVMapString(CTMcontext aContext,
 {
   _CTMcontext * self = (_CTMcontext *) aContext;
   _CTMfloatmap * map;
-  CTMuint i;
+  CTMenum i;
   if(!self) return (const char *) 0;
 
   // Find the indicated map
@@ -486,7 +486,7 @@ CTMEXPORT CTMfloat CTMCALL ctmGetUVMapFloat(CTMcontext aContext,
 {
   _CTMcontext * self = (_CTMcontext *) aContext;
   _CTMfloatmap * map;
-  CTMuint i;
+  CTMenum i;
   if(!self) return 0.0f;
 
   // Find the indicated map
@@ -524,7 +524,7 @@ CTMEXPORT const char * CTMCALL ctmGetAttribMapString(CTMcontext aContext,
 {
   _CTMcontext * self = (_CTMcontext *) aContext;
   _CTMfloatmap * map;
-  CTMuint i;
+  CTMenum i;
   if(!self) return (const char *) 0;
 
   // Find the indicated map
@@ -562,7 +562,7 @@ CTMEXPORT CTMfloat CTMCALL ctmGetAttribMapFloat(CTMcontext aContext,
 {
   _CTMcontext * self = (_CTMcontext *) aContext;
   _CTMfloatmap * map;
-  CTMuint i;
+  CTMenum i;
   if(!self) return 0.0f;
 
   // Find the indicated map
@@ -808,7 +808,7 @@ CTMEXPORT void CTMCALL ctmUVCoordPrecision(CTMcontext aContext,
 {
   _CTMcontext * self = (_CTMcontext *) aContext;
   _CTMfloatmap * map;
-  CTMuint i;
+  CTMenum i;
   if(!self) return;
 
   // You are only allowed to change compression attributes in export mode
@@ -851,7 +851,7 @@ CTMEXPORT void CTMCALL ctmAttribPrecision(CTMcontext aContext,
 {
   _CTMcontext * self = (_CTMcontext *) aContext;
   _CTMfloatmap * map;
-  CTMuint i;
+  CTMenum i;
   if(!self) return;
 
   // You are only allowed to change compression attributes in export mode
@@ -893,7 +893,7 @@ CTMEXPORT void CTMCALL ctmFileComment(CTMcontext aContext,
   const char * aFileComment)
 {
   _CTMcontext * self = (_CTMcontext *) aContext;
-  int len;
+  size_t len;
   if(!self) return;
 
   // You are only allowed to change file attributes in export mode
@@ -974,7 +974,7 @@ static _CTMfloatmap * _ctmAddFloatMap(_CTMcontext * self,
   _CTMfloatmap ** aList)
 {
   _CTMfloatmap * map;
-  CTMuint len;
+  size_t len;
 
   // Allocate memory for a new map list item and append it to the list
   if(!*aList)

@@ -10,6 +10,8 @@
 #include <stdio.h>
 #endif
 
+#pragma warning( disable: 4456 )
+
 #include "LzmaEnc.h"
 
 #include "LzFind.h"
