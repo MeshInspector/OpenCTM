@@ -926,7 +926,8 @@ int _ctmCompressMesh_MG2(_CTMcontext * self)
     free((void *) sortVertices);
     return CTM_FALSE;
   }
-  _ctmReArrangeTriangles(self, indices);
+  if ( self->mRearrangeTriangles )
+    _ctmReArrangeTriangles(self, indices);
 
   // Calculate index deltas (entropy-reduction)
   deltaIndices = (CTMuint *) malloc(sizeof(CTMuint) * self->mTriangleCount * 3);

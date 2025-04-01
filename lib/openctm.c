@@ -191,13 +191,17 @@ CTMEXPORT CTMcontext CTMCALL ctmNewContext(CTMenum aMode)
   self = (_CTMcontext *) malloc(sizeof(_CTMcontext));
 
   // Initialize structure (set null pointers and zero array lengths)
-  memset(self, 0, sizeof(_CTMcontext));
-  self->mMode = aMode;
-  self->mError = CTM_NONE;
-  self->mMethod = CTM_METHOD_MG1;
-  self->mCompressionLevel = 1;
-  self->mVertexPrecision = 1.0f / 1024.0f;
-  self->mNormalPrecision = 1.0f / 256.0f;
+  if ( self ) 
+  {
+      memset(self, 0, sizeof(_CTMcontext));
+      self->mMode = aMode;
+      self->mError = CTM_NONE;
+      self->mMethod = CTM_METHOD_MG1;
+      self->mCompressionLevel = 1;
+      self->mVertexPrecision = 1.0f / 1024.0f;
+      self->mNormalPrecision = 1.0f / 256.0f;
+      self->mRearrangeTriangles = 1;
+  }
 
   return (CTMcontext) self;
 }
@@ -691,6 +695,14 @@ CTMEXPORT void CTMCALL ctmCompressionLevel(CTMcontext aContext,
 
   // Set the compression level
   self->mCompressionLevel = aLevel;
+}
+
+CTMEXPORT void CTMCALL ctmRearrangeTriangles( CTMcontext aContext, CTMint aOn )
+{
+  _CTMcontext * self = (_CTMcontext *) aContext;
+  if(!self) return;
+
+  self->mRearrangeTriangles = aOn;
 }
 
 //-----------------------------------------------------------------------------

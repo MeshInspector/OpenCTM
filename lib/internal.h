@@ -102,6 +102,9 @@ typedef struct {
 
   // User data (for stream read/write - usually the stream handle)
   void * mUserData;
+
+  // true changes the order of triangles to achieve better compression
+  CTMint mRearrangeTriangles;
 } _CTMcontext;
 
 //-----------------------------------------------------------------------------

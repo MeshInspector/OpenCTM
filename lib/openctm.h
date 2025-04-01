@@ -463,6 +463,10 @@ CTMEXPORT void CTMCALL ctmCompressionMethod(CTMcontext aContext,
 CTMEXPORT void CTMCALL ctmCompressionLevel(CTMcontext aContext,
   CTMuint aLevel);
 
+/// turns on/off triangles rearrangement during compression:
+/// if it is turned on, then higher compression ratios are reached but the order of triangles is changed
+CTMEXPORT void CTMCALL ctmRearrangeTriangles( CTMcontext aContext, CTMint aOn );
+
 /// Set the vertex coordinate precision (only used by the MG2 compression
 /// method).
 /// @param[in] aContext An OpenCTM context that has been created by

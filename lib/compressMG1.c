@@ -159,7 +159,9 @@ int _ctmCompressMesh_MG1(_CTMcontext * self)
   }
   for(i = 0; i < self->mTriangleCount * 3; ++ i)
     indices[i] = self->mIndices[i];
-  _ctmReArrangeTriangles(self, indices);
+
+  if ( self->mRearrangeTriangles )
+    _ctmReArrangeTriangles(self, indices);
 
   // Calculate index deltas (entropy-reduction)
   _ctmMakeIndexDeltas(self, indices);
@@ -185,7 +187,6 @@ int _ctmCompressMesh_MG1(_CTMcontext * self)
   _ctmStreamWrite(self, (void *) "VERT", 4);
   if(!_ctmStreamWritePackedFloats(self, self->mVertices, self->mVertexCount * 3, 1))
   {
-    free((void *) indices);
     return CTM_FALSE;
   }
 
