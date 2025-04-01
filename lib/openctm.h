@@ -125,7 +125,7 @@ extern "C" {
   #if defined(OPENCTM_STATIC)
     #define CTMEXPORT
   #else
-    #if defined(OPENCTM_BUILD)
+    #if defined(OpenCTM_EXPORTS)
       #define CTMEXPORT __declspec(dllexport)
     #else
       #define CTMEXPORT __declspec(dllimport)
