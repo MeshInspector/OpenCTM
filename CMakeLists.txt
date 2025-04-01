@@ -55,7 +55,7 @@ if(OPENCTM_INSTALL)
     include(CMakePackageConfigHelpers)
 
     configure_package_config_file(
-        OpenCTMConfig.cmake.in
+        cmake/OpenCTMConfig.cmake.in
         ${CMAKE_CURRENT_BINARY_DIR}/OpenCTMConfig.cmake
         INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/OpenCTM
     )
