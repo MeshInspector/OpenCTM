@@ -213,7 +213,7 @@ class CTMimporter {
       CheckError();
     }
 
-    // You can not copy nor assign from one CTMimporter object to another, since
+    // You cannot copy nor assign from one CTMimporter object to another, since
     // the object contains hidden state. By declaring these dummy prototypes
     // without an implementation, you will at least get linker errors if you try
     // to copy or assign a CTMimporter object.
@@ -364,7 +364,7 @@ class CTMexporter {
       CheckError();
     }
 
-    // You can not copy nor assign from one CTMexporter object to another, since
+    // You cannot copy nor assign from one CTMexporter object to another, since
     // the object contains hidden state. By declaring these dummy prototypes
     // without an implementation, you will at least get linker errors if you try
     // to copy or assign a CTMexporter object.

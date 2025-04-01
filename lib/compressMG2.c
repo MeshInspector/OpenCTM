@@ -479,7 +479,7 @@ static void _ctmCalcSmoothNormals(_CTMcontext * self, CTMfloat * aVertices,
 // _ctmMakeNormalCoordSys() - Create an ortho-normalized coordinate system
 // where the Z-axis is aligned with the given normal.
 // Note 1: This function is central to how the compressed normal data is
-//  interpreted, and it can not be changed (mathematically) without making the
+//  interpreted, and it cannot be changed (mathematically) without making the
 //  coder/decoder incompatible with other versions of the library!
 // Note 2: Since we do this for every single normal, this routine needs to be
 //  fast. The current implementation uses: 12 MUL, 1 DIV, 1 SQRT, ~6 ADD.
