@@ -52,12 +52,12 @@ class ctm_error: public std::exception
       mErrorCode = aError;
     }
 
-    virtual const char* what() const throw()
+    virtual const char* what() const noexcept
     {
       return ctmErrorString(mErrorCode);
     }
 
-    CTMenum error_code() const throw()
+    CTMenum error_code() const noexcept
     {
       return mErrorCode;
     }
