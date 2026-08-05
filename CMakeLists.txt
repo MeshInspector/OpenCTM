@@ -26,15 +26,17 @@ add_library(OpenCTM SHARED
     lib/stream.c
 )
 
+include(GNUInstallDirs)
+
 target_include_directories(OpenCTM
     PRIVATE
         $<BUILD_INTERFACE:lib lib/liblzma>
+    INTERFACE
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 option(OPENCTM_INSTALL "Add installation rules" ON)
 if(OPENCTM_INSTALL)
-    include(GNUInstallDirs)
-
     install(
         FILES lib/openctm.h lib/openctmpp.h
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/OpenCTM
