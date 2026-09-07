@@ -132,17 +132,20 @@ void _ctmStreamReadSTRING(_CTMcontext * self, char ** aValue)
   // Get string length
   len = _ctmStreamReadUINT(self);
 
+  // len + 1 would wrap to 0 (also for a 32-bit size_t), giving a tiny buffer
+  if(len == ~(CTMuint) 0)
+  {
+    self->mError = CTM_BAD_FORMAT;
+    return;
+  }
+
   // Read string
   if(len > 0)
   {
-    // Compute the allocation size in size_t so that (len + 1) cannot wrap
-    // around to a tiny buffer for a crafted length such as 0xFFFFFFFF.
     *aValue = (char *) malloc((size_t) len + 1);
     if(*aValue)
     {
-      // Only terminate if the requested bytes were really available; a short
-      // read on a truncated/crafted file would otherwise leave the buffer
-      // partially written (and, before the size_t fix above, overflow it).
+      // A short read means a truncated or crafted file
       if(_ctmStreamRead(self, (void *) *aValue, len) != len)
       {
         free(*aValue);

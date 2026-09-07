@@ -1234,6 +1234,8 @@ CTMEXPORT void CTMCALL ctmLoadCustom(CTMcontext aContext, CTMreadfn aReadFn,
   self->mAttribMapCount = _ctmStreamReadUINT(self);
   flags = _ctmStreamReadUINT(self);
   _ctmStreamReadSTRING(self, &self->mFileComment);
+  if(self->mError != CTM_NONE)
+    return;
 
   // Allocate memory for the mesh arrays
   self->mVertices = (CTMfloat *) malloc(self->mVertexCount * sizeof(CTMfloat) * 3);
