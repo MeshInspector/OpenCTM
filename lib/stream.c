@@ -135,12 +135,25 @@ void _ctmStreamReadSTRING(_CTMcontext * self, char ** aValue)
   // Read string
   if(len > 0)
   {
-    *aValue = (char *) malloc(len + 1);
+    // Compute the allocation size in size_t so that (len + 1) cannot wrap
+    // around to a tiny buffer for a crafted length such as 0xFFFFFFFF.
+    *aValue = (char *) malloc((size_t) len + 1);
     if(*aValue)
     {
-      _ctmStreamRead(self, (void *) *aValue, len);
+      // Only terminate if the requested bytes were really available; a short
+      // read on a truncated/crafted file would otherwise leave the buffer
+      // partially written (and, before the size_t fix above, overflow it).
+      if(_ctmStreamRead(self, (void *) *aValue, len) != len)
+      {
+        free(*aValue);
+        *aValue = (char *) 0;
+        self->mError = CTM_BAD_FORMAT;
+        return;
+      }
       (*aValue)[len] = 0;
     }
+    else
+      self->mError = CTM_OUT_OF_MEMORY;
   }
 }
 
