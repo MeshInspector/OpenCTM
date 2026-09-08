@@ -1149,7 +1149,8 @@ static CTMuint _ctmAllocateFloatMaps(_CTMcontext * self,
   _CTMfloatmap ** aMapListPtr, CTMuint aCount, CTMuint aChannels)
 {
   _CTMfloatmap ** mapListPtr;
-  CTMuint i, size;
+  CTMuint i;
+  size_t size;
 
   mapListPtr = aMapListPtr;
   for(i = 0; i < aCount; ++ i)
@@ -1234,6 +1235,19 @@ CTMEXPORT void CTMCALL ctmLoadCustom(CTMcontext aContext, CTMreadfn aReadFn,
   self->mUVMapCount = _ctmStreamReadUINT(self);
   self->mAttribMapCount = _ctmStreamReadUINT(self);
   flags = _ctmStreamReadUINT(self);
+
+  // Reject counts whose count * stride could wrap an allocation to an
+  // undersized buffer. The largest stride is 16 bytes (4 floats per vertex).
+  // UINT_MAX rather than SIZE_MAX because count * 3, count * 4 and the temp
+  // buffer sizes in stream.c are still computed in 32-bit CTMuint everywhere.
+  if(self->mVertexCount > 0xFFFFFFFFu / 16 ||
+     self->mTriangleCount > 0xFFFFFFFFu / 16)
+  {
+    _ctmClearMesh(self);
+    self->mError = CTM_BAD_FORMAT;
+    return;
+  }
+
   _ctmStreamReadSTRING(self, &self->mFileComment);
   if(self->mError != CTM_NONE)
   {
@@ -1245,6 +1259,7 @@ CTMEXPORT void CTMCALL ctmLoadCustom(CTMcontext aContext, CTMreadfn aReadFn,
   self->mVertices = (CTMfloat *) malloc(self->mVertexCount * sizeof(CTMfloat) * 3);
   if(!self->mVertices)
   {
+    _ctmClearMesh(self);
     self->mError = CTM_OUT_OF_MEMORY;
     return;
   }
