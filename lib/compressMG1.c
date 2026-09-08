@@ -282,7 +282,10 @@ int _ctmUncompressMesh_MG1(_CTMcontext * self)
     return CTM_FALSE;
   }
   if(!_ctmStreamReadPackedInts(self, (CTMint *) indices, self->mTriangleCount, 3, CTM_FALSE))
+  {
+    free(indices);
     return CTM_FALSE;
+  }
 
   // Restore indices
   _ctmRestoreIndices(self, indices);
