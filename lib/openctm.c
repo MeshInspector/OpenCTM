@@ -1234,6 +1234,18 @@ CTMEXPORT void CTMCALL ctmLoadCustom(CTMcontext aContext, CTMreadfn aReadFn,
   self->mUVMapCount = _ctmStreamReadUINT(self);
   self->mAttribMapCount = _ctmStreamReadUINT(self);
   flags = _ctmStreamReadUINT(self);
+
+  // Reject counts so large that a per-element allocation size (count * stride)
+  // would overflow size_t and wrap to an undersized buffer. The largest strides
+  // are 16 bytes per vertex and 12 per triangle; 32 is a safe bound for both.
+  if(self->mVertexCount > ((size_t) -1) / 32 ||
+     self->mTriangleCount > ((size_t) -1) / 32)
+  {
+    _ctmClearMesh(self);
+    self->mError = CTM_BAD_FORMAT;
+    return;
+  }
+
   _ctmStreamReadSTRING(self, &self->mFileComment);
   if(self->mError != CTM_NONE)
   {
