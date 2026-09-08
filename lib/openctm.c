@@ -1237,10 +1237,10 @@ CTMEXPORT void CTMCALL ctmLoadCustom(CTMcontext aContext, CTMreadfn aReadFn,
   flags = _ctmStreamReadUINT(self);
 
   // Reject counts whose count * stride could wrap an allocation to an
-  // undersized buffer. Largest stride is 16 bytes; 32 is a safe bound. The
-  // 32-bit UINT_MAX bound also covers strides computed in 32-bit CTMuint.
-  if(self->mVertexCount > 0xFFFFFFFFu / 32 ||
-     self->mTriangleCount > 0xFFFFFFFFu / 32)
+  // undersized buffer. The largest stride is 16 bytes (4 floats per vertex).
+  // The 32-bit UINT_MAX bound also covers products computed in 32-bit CTMuint.
+  if(self->mVertexCount > 0xFFFFFFFFu / 16 ||
+     self->mTriangleCount > 0xFFFFFFFFu / 16)
   {
     _ctmClearMesh(self);
     self->mError = CTM_BAD_FORMAT;
