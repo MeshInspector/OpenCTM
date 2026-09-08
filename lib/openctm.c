@@ -1201,8 +1201,9 @@ CTMEXPORT void CTMCALL ctmLoadCustom(CTMcontext aContext, CTMreadfn aReadFn,
   self->mReadFn = aReadFn;
   self->mUserData = aUserData;
 
-  // Clear any old mesh arrays
+  // Clear any old mesh arrays and any stale error from a previous call
   _ctmClearMesh(self);
+  self->mError = CTM_NONE;
 
   // Read header from stream
   if(_ctmStreamReadUINT(self) != FOURCC("OCTM"))
@@ -1235,7 +1236,10 @@ CTMEXPORT void CTMCALL ctmLoadCustom(CTMcontext aContext, CTMreadfn aReadFn,
   flags = _ctmStreamReadUINT(self);
   _ctmStreamReadSTRING(self, &self->mFileComment);
   if(self->mError != CTM_NONE)
+  {
+    _ctmClearMesh(self);
     return;
+  }
 
   // Allocate memory for the mesh arrays
   self->mVertices = (CTMfloat *) malloc(self->mVertexCount * sizeof(CTMfloat) * 3);

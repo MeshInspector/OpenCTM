@@ -129,6 +129,10 @@ void _ctmStreamReadSTRING(_CTMcontext * self, char ** aValue)
     *aValue = (char *) 0;
   }
 
+  // Do not keep parsing after an earlier read has already failed
+  if(self->mError != CTM_NONE)
+    return;
+
   // Get string length
   len = _ctmStreamReadUINT(self);
 
