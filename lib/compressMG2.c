@@ -1280,6 +1280,11 @@ int _ctmUncompressMesh_MG2(_CTMcontext * self)
     }
     _ctmStreamReadSTRING(self, &map->mName);
     _ctmStreamReadSTRING(self, &map->mFileName);
+    if(self->mError != CTM_NONE)
+    {
+      free((void *) intUVCoords);
+      return CTM_FALSE;
+    }
     map->mPrecision = _ctmStreamReadFLOAT(self);
     if(map->mPrecision <= 0.0f)
     {
@@ -1319,6 +1324,11 @@ int _ctmUncompressMesh_MG2(_CTMcontext * self)
       return CTM_FALSE;
     }
     _ctmStreamReadSTRING(self, &map->mName);
+    if(self->mError != CTM_NONE)
+    {
+      free((void *) intAttribs);
+      return CTM_FALSE;
+    }
     map->mPrecision = _ctmStreamReadFLOAT(self);
     if(map->mPrecision <= 0.0f)
     {

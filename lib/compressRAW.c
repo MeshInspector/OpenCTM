@@ -157,6 +157,8 @@ int _ctmUncompressMesh_RAW(_CTMcontext * self)
     }
     _ctmStreamReadSTRING(self, &map->mName);
     _ctmStreamReadSTRING(self, &map->mFileName);
+    if(self->mError != CTM_NONE)
+      return 0;
     for(i = 0; i < self->mVertexCount * 2; ++ i)
       map->mValues[i] = _ctmStreamReadFLOAT(self);
     map = map->mNext;
@@ -172,6 +174,8 @@ int _ctmUncompressMesh_RAW(_CTMcontext * self)
       return 0;
     }
     _ctmStreamReadSTRING(self, &map->mName);
+    if(self->mError != CTM_NONE)
+      return 0;
     for(i = 0; i < self->mVertexCount * 4; ++ i)
       map->mValues[i] = _ctmStreamReadFLOAT(self);
     map = map->mNext;

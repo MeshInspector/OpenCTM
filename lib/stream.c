@@ -129,18 +129,38 @@ void _ctmStreamReadSTRING(_CTMcontext * self, char ** aValue)
     *aValue = (char *) 0;
   }
 
+  // Do not keep parsing after an earlier read has already failed
+  if(self->mError != CTM_NONE)
+    return;
+
   // Get string length
   len = _ctmStreamReadUINT(self);
+
+  // len + 1 would wrap to 0 (also for a 32-bit size_t), giving a tiny buffer
+  if(len == ~(CTMuint) 0)
+  {
+    self->mError = CTM_BAD_FORMAT;
+    return;
+  }
 
   // Read string
   if(len > 0)
   {
-    *aValue = (char *) malloc(len + 1);
+    *aValue = (char *) malloc((size_t) len + 1);
     if(*aValue)
     {
-      _ctmStreamRead(self, (void *) *aValue, len);
+      // A short read means a truncated or crafted file
+      if(_ctmStreamRead(self, (void *) *aValue, len) != len)
+      {
+        free(*aValue);
+        *aValue = (char *) 0;
+        self->mError = CTM_BAD_FORMAT;
+        return;
+      }
       (*aValue)[len] = 0;
     }
+    else
+      self->mError = CTM_OUT_OF_MEMORY;
   }
 }
 

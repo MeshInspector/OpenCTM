@@ -324,6 +324,8 @@ int _ctmUncompressMesh_MG1(_CTMcontext * self)
     }
     _ctmStreamReadSTRING(self, &map->mName);
     _ctmStreamReadSTRING(self, &map->mFileName);
+    if(self->mError != CTM_NONE)
+      return CTM_FALSE;
     if(!_ctmStreamReadPackedFloats(self, map->mValues, self->mVertexCount, 2))
       return CTM_FALSE;
     map = map->mNext;
@@ -339,6 +341,8 @@ int _ctmUncompressMesh_MG1(_CTMcontext * self)
       return 0;
     }
     _ctmStreamReadSTRING(self, &map->mName);
+    if(self->mError != CTM_NONE)
+      return CTM_FALSE;
     if(!_ctmStreamReadPackedFloats(self, map->mValues, self->mVertexCount, 4))
       return CTM_FALSE;
     map = map->mNext;
