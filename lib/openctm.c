@@ -1149,7 +1149,8 @@ static CTMuint _ctmAllocateFloatMaps(_CTMcontext * self,
   _CTMfloatmap ** aMapListPtr, CTMuint aCount, CTMuint aChannels)
 {
   _CTMfloatmap ** mapListPtr;
-  CTMuint i, size;
+  CTMuint i;
+  size_t size;
 
   mapListPtr = aMapListPtr;
   for(i = 0; i < aCount; ++ i)
@@ -1235,11 +1236,11 @@ CTMEXPORT void CTMCALL ctmLoadCustom(CTMcontext aContext, CTMreadfn aReadFn,
   self->mAttribMapCount = _ctmStreamReadUINT(self);
   flags = _ctmStreamReadUINT(self);
 
-  // Reject counts so large that a per-element allocation size (count * stride)
-  // would overflow size_t and wrap to an undersized buffer. The largest strides
-  // are 16 bytes per vertex and 12 per triangle; 32 is a safe bound for both.
-  if(self->mVertexCount > ((size_t) -1) / 32 ||
-     self->mTriangleCount > ((size_t) -1) / 32)
+  // Reject counts whose count * stride could wrap an allocation to an
+  // undersized buffer. Largest stride is 16 bytes; 32 is a safe bound. The
+  // 32-bit UINT_MAX bound also covers strides computed in 32-bit CTMuint.
+  if(self->mVertexCount > 0xFFFFFFFFu / 32 ||
+     self->mTriangleCount > 0xFFFFFFFFu / 32)
   {
     _ctmClearMesh(self);
     self->mError = CTM_BAD_FORMAT;
