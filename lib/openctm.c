@@ -1257,6 +1257,7 @@ CTMEXPORT void CTMCALL ctmLoadCustom(CTMcontext aContext, CTMreadfn aReadFn,
   self->mVertices = (CTMfloat *) malloc(self->mVertexCount * sizeof(CTMfloat) * 3);
   if(!self->mVertices)
   {
+    _ctmClearMesh(self);
     self->mError = CTM_OUT_OF_MEMORY;
     return;
   }
